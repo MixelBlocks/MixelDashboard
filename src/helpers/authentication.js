@@ -183,9 +183,31 @@ export function refreshUserData(conponent) {
         .then((response) => response.json())
         .then((res) => {
             if (!res.error) conponent.setState({ user: res.user });
-            else window.location.href = '/logout';
         })
         .catch((error) => {
             console.error(error);
         });
+}
+
+export async function getUserData() {
+    return new Promise((resolve, reject) => {
+        var token = localStorage.getItem('token');
+        if (!token) return resolve(null);
+        fetch('https://api.mixelblocks.de/v1/me', {
+            method: 'POST',
+            headers: new Headers({
+                Authorization: token,
+                'Content-Type': 'application/json',
+            }),
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                if (!res.error) return resolve(res.user);
+                else resolve(null);
+            })
+            .catch((error) => {
+                console.error(error);
+                return resolve(null);
+            });
+    });
 }

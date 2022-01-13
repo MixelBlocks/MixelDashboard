@@ -1,0 +1,34 @@
+.ServerInfo {
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.proxyInfo {
+    .txt {
+        font-size: medium;
+        color: white;
+
+        .value {
+            font-size: large;
+            color: silver;
+        }
+    }
+}
+
+.refreshButton {
+    background-color: rgb(76, 99, 175);
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+
+    &:hover {
+        background-color: rgb(37, 69, 175);
+    }
+}

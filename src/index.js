@@ -13,6 +13,7 @@ import StartPage from './pages/index/StartPage';
 import LoginPage from './pages/login/LoginPage';
 import LogoutPage from './pages/logout/LogoutPage';
 import RegisterPage from './pages/register/RegisterPage';
+import ServerInfo from './pages/server-info/ServerInfo';
 
 class Redirect extends React.Component {
     componentDidMount() {
@@ -27,6 +28,7 @@ ReactDOM.render(
     <BrowserRouter>
         <Routes>
             <Route exact path="/" element={<StartPage />} />
+            <Route exact path="/server-info" element={<ServerInfo />} />
             <Route path="/app/*" element={<App />} />
             <Route exact path="/login" element={<LoginPage />} />
             <Route exact path="/logout" element={<LogoutPage />} />
