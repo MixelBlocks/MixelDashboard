@@ -1,6 +1,7 @@
 {
     "short_name": "dash-mixelblocks",
     "name": "MixelBlocks Dashboard",
+    "description": "Das MixelBlocks Dashboard zur Verwaltung deiner Spielerdaten, deines Clans und deines Bank Accounts.",
     "icons": [
         {
             "src": "favicon.ico",
@@ -10,6 +11,6 @@
     ],
     "start_url": ".",
     "display": "standalone",
-    "theme_color": "#000000",
-    "background_color": "#ffffff"
+    "theme_color": "#00ee00",
+    "background_color": "#000000"
 }

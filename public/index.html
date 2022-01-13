@@ -1,17 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+        <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <meta name="description" content="MixelBlocks Web Dashboard" />
-        <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+        <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+
+        <meta name="title" content="MixelBlocks | Dashboard" />
+        <meta name="description" content="MixelBlocks Dashboard | Das MixelBlocks Dashboard zur Verwaltung deiner Spielerdaten, deines Clans und deines Bank Accounts." />
+        <meta name="keywords" content="mixel, mixelblocks, minecraft, server, minecraftserver, citybuild, cb" />
+        <meta property="og:image" content="%PUBLIC_URL%/images/logo.png" />
+
+        <meta name="robots" content="index, follow" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="german" />
+        <meta name="revisit-after" content="30 days" />
+        <meta name="author" content="𝕷𝖚𝖈𝖎𝖋𝖊𝖗#1234" />
+
+        <meta name="application-name" content="MixelBlocks | Dashboard" />
+        <meta name="apple-mobile-web-app-title" content="MixelBlocks | Dashboard" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#00ee00" />
+        <meta name="msapplication-TileColor" content="#00ee00" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="#00ee00" />
+
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
         <title>Dashboard | MixelBlocks</title>
+        <style>
+            html {
+                background: #020202;
+            }
+        </style>
     </head>
     <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <noscript class="noselect">
+            <style>
+                body {
+                    overflow: hidden;
+                }
+                noscript {
+                    width: 100vw;
+                    height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                }
+                .noselect {
+                    user-select: none;
+                }
+                .noscript-p {
+                    color: #00ee00;
+                    font-family: monospace;
+                    font-size: 20px;
+                }
+            </style>
+            <img style="position: absolute; border-radius: 50%; left: 50vw; top: 50vh; transform: translate(-50%, -50%); width: 80vh; opacity: 0.5; pointer-events: none" src="%PUBLIC_URL%/images/logo.png" alt="Logo" />
+            <p class="noscript-p">MixelBlocks Dashboard</p>
+            <p class="noscript-p">Du musst JavaScript in deinem Browser ausfühbar machen damit diese App bei dir funktioniert.</p>
+        </noscript>
         <div id="root"></div>
     </body>
 </html>

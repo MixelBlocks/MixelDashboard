@@ -1,13 +1,14 @@
 import { Component } from 'react';
 
-import './App.scss';
-import logo from './images/logo.png';
+import './StartPage.scss';
 
-export default class App extends Component {
+import Logo from '../../images/logo.png';
+
+export default class StartPage extends Component {
     render() {
         return (
-            <div className="App">
-                <img className="logo" src={logo} alt="Logo"></img>
+            <div className="StartPage">
+                <img className="logo" src={Logo} alt="Logo"></img>
                 <h1>
                     Hier entsteht das WebDashboard für MixelBlocks. <a href="https://mixelblocks.de/">Website</a>
                 </h1>
