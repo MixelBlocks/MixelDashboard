@@ -2,7 +2,7 @@ import { Component } from 'react';
 
 import './AppStart.scss';
 
-import { refreshUserData } from '../../../../helpers/authentication';
+import { refreshUserData, AuthenticationLoginHeader } from '../../../../helpers/authentication';
 
 export default class StartPage extends Component {
     constructor(props) {
@@ -17,7 +17,14 @@ export default class StartPage extends Component {
     render() {
         return (
             <div className="AppStart">
-                <h1>Willkommen in Dashboard {this.state.user ? this.state.user.username : <></>}</h1>
+                <AuthenticationLoginHeader />
+                {this.state.user?.username ? (
+                    <>
+                        <div className="dashboard">DashBoard</div>
+                    </>
+                ) : (
+                    <></>
+                )}
             </div>
         );
     }

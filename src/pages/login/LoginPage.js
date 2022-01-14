@@ -2,7 +2,7 @@ import { Component } from 'react';
 
 import './LoginPage.scss';
 
-import { AuthenticationLoginForm, getUserData } from '../../helpers/authentication';
+import { AuthenticationLoginForm, getUserData, AuthenticationLoginHeader } from '../../helpers/authentication';
 
 export default class LoginPage extends Component {
     componentDidMount() {
@@ -20,6 +20,7 @@ export default class LoginPage extends Component {
     render() {
         return (
             <div className="LoginPage">
+                <AuthenticationLoginHeader />
                 <AuthenticationLoginForm />
             </div>
         );

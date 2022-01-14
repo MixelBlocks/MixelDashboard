@@ -2,7 +2,7 @@ import { Component } from 'react';
 
 import './ServerInfo.scss';
 
-let x = { description: { extra: [{ color: 'dark_green', text: 'Mixel' }, { color: 'dark_green', text: 'Blocks ' }, { color: 'dark_aqua', text: 'Network ' }, { text: '[' }, { color: 'blue', text: 'UNDER DEVELOPMENT' }, { text: ']\n' }, { text: 'Besuche unsere Website https://mixelblocks.de/' }], text: '' } };
+import { AuthenticationLoginHeader } from '../../helpers/authentication';
 
 export default class ServerInfo extends Component {
     constructor(props) {
@@ -51,6 +51,7 @@ export default class ServerInfo extends Component {
     render() {
         return (
             <div className="ServerInfo">
+                <AuthenticationLoginHeader />
                 <div className="proxyInfo">
                     {this.state.serverImage ? <img className="serverIcon" src={this.state.serverImage} alt="ServerLogo"></img> : <></>}
                     <p className="txt">

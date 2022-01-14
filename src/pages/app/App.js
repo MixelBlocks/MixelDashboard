@@ -4,17 +4,24 @@ import { Routes, Route } from 'react-router-dom';
 
 import './App.scss';
 
-import Authentication from '../../helpers/authentication';
+import { refreshUserData } from '../../helpers/authentication';
 
 import AppStart from './sites/index/AppStart';
+import TeamStart from './sites/index/TeamStart';
 
 export default class App extends Component {
+    state = {
+        user: null,
+    };
+    componentDidMount() {
+        refreshUserData(this);
+    }
     render() {
         return (
             <div className="App">
-                <Authentication required />
                 <Routes>
                     <Route exact path="/" element={<AppStart />} />
+                    <Route path="/team/*" element={<TeamStart />} />
                 </Routes>
             </div>
         );

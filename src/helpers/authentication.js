@@ -2,26 +2,106 @@ import { Component } from 'react';
 
 import $ from 'jquery';
 
-export class AuthenticationRequired extends Component {
+import './authentication.scss';
+
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Container from 'react-bootstrap/Container';
+
+import FormControl from 'react-bootstrap/FormControl';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
+import Logo from '../images/logo.png';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignInAlt, faSignOutAlt, faGlobe, faSignature } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+
+export class AuthenticationLoginHeader extends Component {
+    state = {
+        user: null,
+    };
     componentDidMount() {
-        var token = localStorage.getItem('token');
-        if (!token) {
-            return (window.location.href = '/login');
-        }
-        fetch('https://api.mixelblocks.de/v1/auth/isAuthenticated', {
-            method: 'POST',
-            headers: new Headers({
-                Authorization: token,
-                'Content-Type': 'application/json',
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.error) window.location.href = '/login';
-            });
+        refreshUserData(this);
+    }
+    componentDidUpdate() {
+        $('#header-submit').click((event) => {
+            event.preventDefault();
+            fetch('https://api.mixelblocks.de/v1/auth/authenticateUser', {
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                }),
+                body: JSON.stringify({
+                    username: $('#header-username').val(),
+                    password: $('#header-password').val(),
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.error) return console.error('ERROR');
+                    localStorage.setItem('token', data.token);
+                    refreshUserData(this);
+                });
+        });
+        $('#header-logout').click((event) => {
+            event.preventDefault();
+            localStorage.removeItem('token');
+            refreshUserData(this);
+        });
+        $('#header-register').click((event) => {
+            event.preventDefault();
+            window.location.href = '/register';
+        });
+    }
+    openExternalURL(uri) {
+        window.open(uri, '_blank');
     }
     render() {
-        return <></>;
+        return (
+            <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
+                <Container fluid>
+                    <Navbar.Brand href={window.location.pathname === '/' ? '#' : '/'}>
+                        <img alt="Logo" src={Logo} width="30" height="30" className="d-inline-block align-top" /> MixelBlocks | Dashboard
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="navbarScroll" />
+                    <Navbar.Collapse id="navbarScroll">
+                        <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '200px' }} navbarScroll>
+                            <Nav.Link target="_blank" href="https://mixelblocks.de/">
+                                <FontAwesomeIcon icon={faGlobe} /> Website
+                            </Nav.Link>
+                            <NavDropdown title="Externe Links" id="navbarScrollingDropdown">
+                                <NavDropdown.Item target="_blank" href="https://github.com/MixelBlocks">
+                                    <FontAwesomeIcon icon={faGithub} /> Github
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        </Nav>
+                        {this.state.user ? (
+                            <Nav>
+                                <Nav.Link href="/app/">Dashboard</Nav.Link>
+                                {this.state.user?.groups?.includes('team') ? <Nav.Link href="/app/team/">Team Dashboard</Nav.Link> : <></>}
+                                <Button title="Ausloggen" id="header-logout" variant="outline-danger" className="me-1">
+                                    <FontAwesomeIcon icon={faSignOutAlt} />
+                                </Button>
+                            </Nav>
+                        ) : (
+                            <Form className="d-flex">
+                                <FormControl id="header-username" type="text" size="sm" placeholder="Username oder Email" className="me-1" aria-label="Username oder Email" />
+                                <FormControl id="header-password" type="password" size="sm" placeholder="Passwort" className="me-1" aria-label="Passwort" />
+                                <Button title="Einloggen" id="header-submit" variant="outline-success" className="me-1">
+                                    <FontAwesomeIcon icon={faSignInAlt} />
+                                </Button>
+                                <Button title="Für das Dashboard Registrieren" id="header-register" variant="outline-warning" className="me-1">
+                                    <FontAwesomeIcon icon={faSignature} />
+                                </Button>
+                            </Form>
+                        )}
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        );
     }
 }
 
@@ -52,23 +132,20 @@ export class AuthenticationLoginForm extends Component {
     }
     render() {
         return (
-            <>
-                <form>
-                    <label>
-                        <p>Username</p>
-                        <input id="username" type="text" />
-                    </label>
-                    <label>
-                        <p>Password</p>
-                        <input id="password" type="password" />
-                    </label>
-                    <div>
-                        <button id="submit" type="submit">
-                            Submit
-                        </button>
-                    </div>
+            <div className="LoginFormHolder">
+                <div className="login-background">
+                    <div className="shape"></div>
+                    <div className="shape"></div>
+                </div>
+                <form className="loginForm">
+                    <h3>Dashboard Login</h3>
+                    <label htmlFor="username">Username</label>
+                    <input type="text" placeholder="Email oder Username" id="username" />
+                    <label htmlFor="password">Password</label>
+                    <input type="password" placeholder="Passwort" id="password" />
+                    <button id="submit">Log In</button>
                 </form>
-            </>
+            </div>
         );
     }
 }
@@ -104,7 +181,7 @@ export class AuthenticationLogout extends Component {
         window.location.href = next;
     }
     render() {
-        return <></>;
+        return <>Logout Prozess...</>;
     }
 }
 
@@ -137,56 +214,29 @@ export class AuthenticationRegisterForm extends Component {
     }
     render() {
         return (
-            <>
-                <form>
-                    <label>
-                        <p>Username</p>
-                        <input id="username" type="text" />
-                    </label>
-                    <label>
-                        <p>Email</p>
-                        <input id="email" type="email" />
-                    </label>
-                    <label>
-                        <p>Password</p>
-                        <input id="password" type="password" />
-                    </label>
-                    <label>
-                        <p>Password Confirm</p>
-                        <input id="password_confirm" type="password" />
-                    </label>
-                    <div>
-                        <button id="submit" type="submit">
-                            Submit
-                        </button>
-                    </div>
+            <div className="LoginFormHolder">
+                <div className="login-background">
+                    <div className="shape"></div>
+                    <div className="shape"></div>
+                </div>
+                <form className="loginForm">
+                    <h3>Registrieren im Dashboard</h3>
+                    <input type="text" placeholder="Username" id="username" />
+                    <input type="text" placeholder="mail@example.com" id="email" />
+                    <input type="password" placeholder="Passwort" id="password" />
+                    <input type="password" placeholder="Passwort Bestätigung" id="password_confirm" />
+                    <button id="submit">Registrieren</button>
                 </form>
-            </>
+            </div>
         );
     }
 }
 
-export default class Authentication extends Component {
-    render() {
-        return <>{this.props.required === true ? <AuthenticationRequired /> : <></>}</>;
-    }
-}
-
-export function refreshUserData(conponent) {
-    fetch('https://api.mixelblocks.de/v1/me', {
-        method: 'POST',
-        headers: new Headers({
-            Authorization: localStorage.getItem('token'),
-            'Content-Type': 'application/json',
-        }),
-    })
-        .then((response) => response.json())
-        .then((res) => {
-            if (!res.error) conponent.setState({ user: res.user });
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+export function refreshUserData(conponent, callback) {
+    getUserData().then((user) => {
+        conponent.setState({ user: user });
+        if (callback) callback(user);
+    });
 }
 
 export async function getUserData() {
@@ -211,3 +261,31 @@ export async function getUserData() {
             });
     });
 }
+
+var authRequired = (ComposedComponent) => {
+    class RequireAuth extends Component {
+        state = {
+            isAuthenticated: false,
+        };
+
+        componentDidMount() {
+            const params = new URLSearchParams(window.location.search);
+            var next = params.get('next');
+            getUserData().then((user) => {
+                this.setState({ isAuthenticated: user != null });
+                if (!this.state.isAuthenticated) {
+                    if (!next) return (window.location.href = '/login');
+                    window.location.href = '/login?next=' + next;
+                }
+            });
+        }
+
+        render() {
+            return this.state.isAuthenticated ? <ComposedComponent {...this.props} /> : <></>;
+        }
+    }
+
+    return <RequireAuth />;
+};
+
+export default authRequired;
