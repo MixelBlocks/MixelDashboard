@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom';
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
+import 'alertifyjs/build/css/alertify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './index.scss';
 
 import reportWebVitals from './modules/reportWebVitals';
 import registerServiceWorker from './modules/registerServiceWorker';
+
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import App from './pages/app/App';
 import StartPage from './pages/index/StartPage';
@@ -29,19 +32,21 @@ class Redirect extends React.Component {
 }
 
 ReactDOM.render(
-    <BrowserRouter>
-        <Routes>
-            <Route exact path="/" element={<StartPage />} />
-            <Route exact path="/server-info" element={<ServerInfo />} />
-            <Route path="/app/*" element={authRequired(App)} />
-            <Route exact path="/login" element={<LoginPage />} />
-            <Route exact path="/logout" element={<LogoutPage />} />
-            <Route exact path="/register" element={<RegisterPage />} />
-            <Route exact path="/discord" element={<Redirect to="https://api.mixelblocks.de/discord" />} />
-            <Route exact path="/website" element={<Redirect to="https://mixelblocks.de/" />} />
-            <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-    </BrowserRouter>,
+    <GoogleReCaptchaProvider reCaptchaKey="6LdaKhAeAAAAAHeMNMom0H62ULmOrwK7dyTUGUwd">
+        <BrowserRouter>
+            <Routes>
+                <Route exact path="/" element={<StartPage />} />
+                <Route exact path="/server-info" element={<ServerInfo />} />
+                <Route path="/app/*" element={authRequired(App)} />
+                <Route exact path="/login" element={<LoginPage />} />
+                <Route exact path="/logout" element={<LogoutPage />} />
+                <Route exact path="/register" element={<RegisterPage />} />
+                <Route exact path="/discord" element={<Redirect to="https://api.mixelblocks.de/discord" />} />
+                <Route exact path="/website" element={<Redirect to="https://mixelblocks.de/" />} />
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+        </BrowserRouter>
+    </GoogleReCaptchaProvider>,
     document.getElementById('root')
 );
 

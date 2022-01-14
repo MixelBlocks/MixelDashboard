@@ -14,11 +14,36 @@ body {
     background: #080710;
     color: #aaaaaa;
 
-    min-height: 100vh;
+    min-height: 120vh;
     min-width: 100vw;
     overflow-x: hidden;
 }
 
 ::selection {
     background: #0030ee99;
+}
+
+.grecaptcha-badge {
+    opacity: 0.2;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    // background-color: transparent;
+    background-color: black;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #55d6fd6d;
+    border-radius: 20px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #55d6fdbb;
 }

@@ -17,7 +17,13 @@ import Logo from '../images/logo.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt, faSignOutAlt, faGlobe, faSignature } from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faGithub, faDiscord } from '@fortawesome/free-brands-svg-icons';
+
+import alertify from 'alertifyjs';
+alertify.defaults.transition = 'pulse';
+alertify.defaults.theme.ok = 'btn btn-primary';
+alertify.defaults.theme.cancel = 'btn btn-danger';
+alertify.defaults.theme.input = 'form-control';
 
 export class AuthenticationLoginHeader extends Component {
     state = {
@@ -41,15 +47,37 @@ export class AuthenticationLoginHeader extends Component {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    if (data.error) return console.error('ERROR');
+                    if (data.error) {
+                        switch (data.message) {
+                            case 'unknownUser':
+                                alertify.error('Der angegebene Benutzer existiert nicht!');
+                                return;
+                            case 'passwordMismatch':
+                                alertify.error('Das eingegebene Passwort ist falsch!');
+                                return;
+                            default:
+                                alertify.error('Unbekannter Error beim Login');
+                                return;
+                        }
+                    }
                     localStorage.setItem('token', data.token);
                     refreshUserData(this);
+                    alertify.success('Du bist nun angemeldet!');
                 });
         });
         $('#header-logout').click((event) => {
             event.preventDefault();
-            localStorage.removeItem('token');
-            refreshUserData(this);
+            alertify.confirm(
+                'Möchtest du dich wirklich abmelden?',
+                () => {
+                    localStorage.removeItem('token');
+                    refreshUserData(this);
+                    alertify.error('Du bist nun abgemeldet!');
+                },
+                () => {
+                    alertify.error('Abmelden abgebrochen');
+                }
+            );
         });
         $('#header-register').click((event) => {
             event.preventDefault();
@@ -69,12 +97,17 @@ export class AuthenticationLoginHeader extends Component {
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '200px' }} navbarScroll>
-                            <Nav.Link target="_blank" href="https://mixelblocks.de/">
-                                <FontAwesomeIcon icon={faGlobe} /> Website
-                            </Nav.Link>
                             <NavDropdown title="Externe Links" id="navbarScrollingDropdown">
-                                <NavDropdown.Item target="_blank" href="https://github.com/MixelBlocks">
+                                <NavDropdown.Item target="_blank" href="https://mixelblocks.de/">
+                                    <FontAwesomeIcon icon={faGlobe} /> Website
+                                </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item target="_blank" href="https://api.mixelblocks.de/github">
                                     <FontAwesomeIcon icon={faGithub} /> Github
+                                </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item target="_blank" href="https://api.mixelblocks.de/discord">
+                                    <FontAwesomeIcon icon={faDiscord} /> Discord
                                 </NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
@@ -123,7 +156,19 @@ export class AuthenticationLoginForm extends Component {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    if (data.error) return console.error('ERROR');
+                    if (data.error) {
+                        switch (data.message) {
+                            case 'unknownUser':
+                                alertify.error('Der angegebene Benutzer existiert nicht!');
+                                return;
+                            case 'passwordMismatch':
+                                alertify.error('Das eingegebene Passwort ist falsch!');
+                                return;
+                            default:
+                                alertify.error('Unbekannter Error beim Login');
+                                return;
+                        }
+                    }
                     localStorage.setItem('token', data.token);
                     if (!next) return (window.location.href = '/app');
                     window.location.href = next;
@@ -205,7 +250,25 @@ export class AuthenticationRegisterForm extends Component {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    if (data.error) return console.error('ERROR ' + data.message);
+                    if (data.error) {
+                        switch (data.message) {
+                            case 'passwordStrengthInvalid':
+                                alertify.error('Dein Passwort ist ungültig!');
+                                return;
+                            case 'userExists':
+                                alertify.error('Der angegebene Benutzer existiert bereits!');
+                                return;
+                            case 'mailExists':
+                                alertify.error('Die angegebene Email wird bereits verwendet!');
+                                return;
+                            case 'passwordMismatch':
+                                alertify.error('Die Passwörter stimmen nicht überein!');
+                                return;
+                            default:
+                                alertify.error('Unbekannter Error beim Login');
+                                return;
+                        }
+                    }
                     localStorage.setItem('token', data.token);
                     if (!next) return (window.location.href = '/app');
                     window.location.href = next;
