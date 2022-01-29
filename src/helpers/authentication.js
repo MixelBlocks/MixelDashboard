@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt, faSignOutAlt, faGlobe, faSignature } from '@fortawesome/free-solid-svg-icons';
 import { faGithub, faDiscord } from '@fortawesome/free-brands-svg-icons';
 
-import alertify from 'alertifyjs';
+import alertify from './alertify';
 alertify.defaults.transition = 'pulse';
 alertify.defaults.theme.ok = 'btn btn-primary';
 alertify.defaults.theme.cancel = 'btn btn-danger';

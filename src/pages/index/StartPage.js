@@ -9,6 +9,12 @@ export default class StartPage extends Component {
         return (
             <div className="StartPage">
                 <AuthenticationLoginHeader />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <center>Hier entsteht das Web Dashboard für das mixelblock.de Minecraft Server Netzwerk</center>
             </div>
         );
     }

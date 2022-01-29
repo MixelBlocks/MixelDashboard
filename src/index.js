@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import 'alertifyjs/build/css/alertify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import './alertify.scss';
 import './index.scss';
 
 import reportWebVitals from './modules/reportWebVitals';
